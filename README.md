@@ -1,59 +1,69 @@
-﻿=== WP-Urlboxplugin ===
-Contributors: Chris Roebuck, Ankur Gurha
-Author: Chris Roebuck
-Tags: screenshot,screenshots,website screenshots,retina screenshots,responsive screenshots,wordpress,plugin,integration
-Requires at least: 3.3
-Tested up to: 4.6
-Stable tag: 1.0
+﻿#Easily display screenshots of websites right in your Wordpress site#
+Uses the [Urlbox](https://urlbox.io) API to generate screenshots and display them in your wordpress using a simple shortcode
 
-This plugin uses the Urlbox API to generate website screenshots and display them on your site
+As simple as ```[urlbox url='urlbox.io' thumb_width='600' full_page=true]```!
 
-== Description ==
+This shortcode would generate the following screenshot:
+![urlbox.io](https://api.urlbox.io/v1/ca482d7e-9417-4569-90fe-80f7c5e1c781/5efad4d9d0ce3b77f1ec529c8b201ad93beeb14c/png?url=urlbox.io&thumb_width=600&full_page=true)
 
-This is a small Wordpress plugin for displaying Website Screenshots in Wordpress. The plugin uses the Urlbox API to display.
 
-Using the plugin is quite easy!
-You only need to add the shortcode to your new or existing page and you're done! 
-
-**Current features**
-
-* 
-* and many more...
-
-**What do you need**
+##What do you need##
 
 * Wordpress
 * Urlbox Account
-* Urlbox API key and secret (From: `https://urlbox.io`)
+* Urlbox API key and secret 
 
-== Installation ==
+[Signup for your free trial at urlbox.io](https://urlbox.io)
 
-1. Upload the urlbox plugin directory to the `/wp-content/plugins/wp-urlboxplugin` Directory (if not exists please create) or install using wordpress plugin installer
-2. Activate the plugin through the **Plugins** menu in WordPress
-3. Edit default settings using **Urlbox Options**
-4. Create a new site or edit an existing site
-5. Insert shortcode
+##Usage##
 
-[urlbox url='google.com']
+Using the plugin is very easy..
 
-6. Go back to **Urlbox Options** and click **Rebuild cache**. Please wait until the cache has been rebuild. 
-7. Done
+* First activate the plugin and fill in your Urlbox.io API Key and Secret in the settings page.
 
-== Frequently asked questions ==
+* Set default options for your screenshots, such as width, height, thumbnail_width on the plugin settings page.
 
-= How to change options from the shortcode
+* Now when you want to display a screenshot inside a post, simply use the following shortcode:
 
-Pass them in like [urlbox url='www.bbc.co.uk' width='100']
+```[urlbox url='google.com'] // this will display a screenshot of google.com ```
 
-== Screenshots ==
+* If you want to override any of the settings, simply pass the option into the shortcode:
+
+```[urlbox url='google.com' full_page='true' thumbnail_width=400] // displays a full_page screenshot of google, thumnailed down to 400px wide```
+
+* The plugin wraps the ```<img>``` tag inside a ```<div>```, you can set the class of both this div and the img tag from the settings page, and also override these settings by passing in the options in the shortcode:
+
+```[urlbox url='google.com' div_class='mydivclass' img_class='myimgclass' ] // change the css classes of the wrapping div and img element```
+
+
+##Frequently asked questions##
+
+* How to change options from the shortcode?
+
+Pass them in like ```[urlbox url='www.bbc.co.uk' width='100']```
+See the plugin settings page for all possible options
+
+##Screenshots##
 
 1. Settings view
+![Settings view](https://raw.githubusercontent.com/urlbox-io/wordpress-screenshots/master/screenshot-1.png)
 
-== Known Bugs ==
+2. Using the shortcode in a post
+![Using the shortcode in a post](https://raw.githubusercontent.com/urlbox-io/wordpress-screenshots/master/screenshot-2.png)
+
+3. Viewing the results
+![Viewing the post](https://raw.githubusercontent.com/urlbox-io/wordpress-screenshots/master/screenshot-3.png)
+
+##Known Bugs##
 
 * None at this time
 
-== Changelog ==
+##Changelog##
 
-= 1.0 =
+###1.0###
 Initial Release
+
+##Upgrade Notice##
+
+###1.0###
+Initial Release!
