@@ -1,4 +1,4 @@
-# Easily display screenshots of websites right in your Wordpress site#
+# Easily display screenshots of websites right in your Wordpress site #
 Uses the [Urlbox](https://urlbox.io) API to generate screenshots and display them in your wordpress using a simple shortcode
 
 As simple as ```[urlbox url='urlbox.io' thumb_width='600' full_page=true]```!
