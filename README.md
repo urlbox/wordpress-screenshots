@@ -1,19 +1,25 @@
 # Urlbox Wordpress Screenshots
 
-## Easily display screenshots of websites right in your Wordpress site
+🎉 Easily display screenshots of websites right in your Wordpress site 🎉
 
-Uses the [Urlbox](https://urlbox.io) API to generate website screenshots from any URL and displays them in your wordpress site using a simple shortcode
+Uses the [Urlbox](https://urlbox.io) API to generate website screenshots from any URL and displays them in your wordpress site using a simple shortcode.
 
 Just add the `[urlbox]` shortcode to any of your posts.
 
-As simple as `[urlbox url='urlbox.io' thumb_width='600']`!
+## Basic Example
 
-This shortcode would generate the following screenshot:
+Just write `[urlbox url='urlbox.io' thumb_width='600']` inside your post.
+
+This will now generate the following screenshot:
+
 ![urlbox.io](https://api.urlbox.io/v1/ca482d7e-9417-4569-90fe-80f7c5e1c781/8f949c12462f53ea3359a412f536ceb69a8ce8e8/png?url=urlbox.io&thumb_width=600)
 
-Want a full page screenshot instead, just add full_page=true to your shortcode options `[urlbox url='urlbox.io' thumb_width='600' full_page=true]`!
+## Full Page Screenshot Example
 
-This shortcode would generate the following screenshot:
+Add full_page=true to your shortcode options `[urlbox url='urlbox.io' thumb_width='600' full_page=true]`
+
+And the resulting screenshot is:
+
 ![urlbox.io](https://api.urlbox.io/v1/ca482d7e-9417-4569-90fe-80f7c5e1c781/5efad4d9d0ce3b77f1ec529c8b201ad93beeb14c/png?url=urlbox.io&thumb_width=600&full_page=true)
 
 ## What do you need
@@ -68,7 +74,7 @@ See the plugin settings page for all possible options
 
 ## Changelog
 
-### 1.3
+### 1.5
 
 Fixed minor bugs and tested with Wordpress 5.7-beta
 
@@ -78,7 +84,7 @@ Initial Release
 
 ## Upgrade Notice
 
-### 1.3
+### 1.5
 
 Fixed minor bugs and tested with Wordpress 5.7-beta
 

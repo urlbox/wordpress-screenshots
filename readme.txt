@@ -5,23 +5,21 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: screenshot,screenshots,puppeteer,playwright,urlbox,url screenshot,url to png, url2png,website screenshots,retina screenshots,responsive screenshots,wordpress,plugin,integration
 Requires at least: 3.3
 Tested up to: 5.7
-Stable tag: 1.4
+Stable tag: 1.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 == Description ==
 
-This plugin uses the Urlbox API to generate website screenshots and display them on your site. Please note the Urlbox API is a paid service, you can sign up for a trial at `https://urlbox.io`.
+🎉 Easily display website screenshots of any URL in your Wordpress site 🎉
 
-Easily display screenshots of websites right in your Wordpress site.  
+This plugin uses the Urlbox API to generate website screenshots and display them on your site. Please note the Urlbox API is a paid service, you can sign up for a trial at <https://urlbox.io>.
 
-Using the plugin is very easy..
+1. First activate the plugin and fill in your Urlbox.io API Key and Secret in the settings page.
 
-First activate the plugin and fill in your Urlbox.io API Key and Secret in the settings page.
+2. (Optional) You can set default options for your screenshots, such as width, height, thumbnail_width on the plugin settings page.
 
-You can also set default options for your screenshots, such as width, height, thumbnail_width on the plugin settings page.
-
-Now when you want to display a screenshot inside a post, simply use the following shortcode:
+3. Now when you want to display a screenshot inside a post, simply use the following shortcode:
 
 [urlbox url='google.com'] // this will display a screenshot of google.com 
 
@@ -37,7 +35,7 @@ The plugin wraps the `<img>` tag inside a `<div>`, you can set the class of both
 
 * Wordpress
 * Urlbox Account
-* Urlbox API key and secret (From: `https://urlbox.io`)
+* Urlbox API key and secret (From: <https://urlbox.io>)
 
 == Installation ==
 
@@ -72,7 +70,7 @@ Pass them in like [urlbox url='www.bbc.co.uk' width='100']
 
 == Changelog ==
 
-= 1.4 =
+= 1.5 =
 Fixed minor bugs and tested with Wordpress 5.7-beta
 
 = 1.0 =
@@ -80,7 +78,7 @@ Initial Release
 
 == Upgrade Notice ==
 
-= 1.4 =
+= 1.5 =
 Fixed minor bugs and tested with Wordpress 5.7-beta
 
 = 1.0 =
