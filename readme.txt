@@ -1,4 +1,4 @@
-﻿=== WP-Urlboxplugin ===
+﻿=== Urlbox Screenshots ===
 Contributors: Chris Roebuck, Ankur Gurha
 Author: Urlbox
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EZLKTKW8UR6PQ
@@ -9,9 +9,9 @@ Stable tag: 1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-This plugin uses the Urlbox API to generate website screenshots and display them on your site
-
 == Description ==
+
+This plugin uses the Urlbox API to generate website screenshots and display them on your site. Please note the Urlbox API is a paid service, you can sign up for a trial at `https://urlbox.io`.
 
 Easily display screenshots of websites right in your Wordpress site.  
 
@@ -29,7 +29,7 @@ If you want to override any of the settings, simply pass the option into the sho
 
 [urlbox url='google.com' full_page='true' thumbnail_width=400] // displays a full_page screenshot of google, thumnailed down to 400px wide
 
-The plugin wraps the <img> tag inside a <div>, you can set the class of both this div and the img tag from the settings page, and also override these settings by passing in the options in the shortcode:
+The plugin wraps the `<img>` tag inside a `<div>`, you can set the class of both this div and the img tag from the settings page, and also override these settings by passing in the options in the shortcode:
 
 [urlbox url='google.com' div_class='mydivclass' img_class='myimgclass' ] // change the css classes of the wrapping div and img element
 
