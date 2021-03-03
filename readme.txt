@@ -5,7 +5,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: screenshot,screenshots,puppeteer,playwright,urlbox,url screenshot,url to png, url2png,website screenshots,retina screenshots,responsive screenshots,wordpress,plugin,integration
 Requires at least: 3.3
 Tested up to: 5.7
-Stable tag: 1.3
+Stable tag: 1.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,7 +72,7 @@ Pass them in like [urlbox url='www.bbc.co.uk' width='100']
 
 == Changelog ==
 
-= 1.3 =
+= 1.4 =
 Fixed minor bugs and tested with Wordpress 5.7-beta
 
 = 1.0 =
@@ -80,7 +80,7 @@ Initial Release
 
 == Upgrade Notice ==
 
-= 1.3 =
+= 1.4 =
 Fixed minor bugs and tested with Wordpress 5.7-beta
 
 = 1.0 =
