@@ -174,7 +174,7 @@ if (!class_exists('Urlbox')) {
 				),
 				array(
 					"id" => "figure_class",
-					"name" => "Wrapping element CSS class",
+					"name" => "Figure element CSS class",
 					"type" => "text",
 					"section" => 'html'
 				),
@@ -276,7 +276,7 @@ if (!class_exists('Urlbox')) {
 
 			add_settings_section(
 				'html',
-				'Html Options',
+				'HTML Options',
 				array($this, 'printHtmlSectionInfo'),
 				'urlbox-screenshots'
 			);
@@ -421,17 +421,16 @@ if (!class_exists('Urlbox')) {
 		 */
 		public function printAuthSectionInfo()
 		{
-			print 'Enter your API Key and Secret below:</br></br>';
-			print 'You can retrieve them by logging in at <a href="https://urlbox.io">Urlbox</a>';
+			print 'Enter your API Key and Secret here. You can get these from your <a href="https://urlbox.io/dashboard">Urlbox Dashboard</a>.';
 		}
 
 		public function printSectionInfo()
 		{
-			print 'Enter your default options below';
+			print 'You can edit the default options here. See <a href="https://urlbox.io/docs/options">Urlbox Options Reference</a> for default values.';
 		}
 		public function printHtmlSectionInfo()
 		{
-			print 'Enter HTML options below';
+			print 'You can add classes to the wrapping ' . htmlentities("<figure>") . ' element and the inside ' . htmlentities("<img>") . ' element here.';
 		}
 
 		/**
