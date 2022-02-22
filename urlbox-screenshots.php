@@ -13,7 +13,7 @@
  * Plugin Name: Urlbox Screenshots
  * Plugin URI:  https://urlbox.io
  * Description: Take screenshots of websites and display them on your wordpress site.
- * Version:     1.5
+ * Version:     1.5.1
  * Author:      Urlbox
  * Author URI:  https://github.com/urlbox-io/wordpress-screenshots
  * Text Domain: urlbox-screenshots
@@ -53,7 +53,7 @@ if (!class_exists('Urlbox')) {
 			'customcss' => '',
 			'imagesize' => '',
 			'debug' => '',
-			'div_class' => '',
+			'figure_class' => '',
 			'img_class' => ''
 		);
 
@@ -173,8 +173,8 @@ if (!class_exists('Urlbox')) {
 					"type" => "checkbox"
 				),
 				array(
-					"id" => "div_class",
-					"name" => "Wrapping Div CSS class",
+					"id" => "figure_class",
+					"name" => "Wrapping element CSS class",
 					"type" => "text",
 					"section" => 'html'
 				),
@@ -480,11 +480,14 @@ if (!class_exists('Urlbox')) {
 			$format = $urlboxOptions['format'];
 			$downloadedUrl = $url;
 			// $this->download_image($url, $format);
-			$output .= "<div class='" . esc_html__($urlboxOptions['div_class']) . "'>";
+			$output .= "<figure class='wp-block-image";
+			if (isset($urlboxOptions['figure_class']))
+				$output .= " " . esc_html__($urlboxOptions['figure_class']);
+			$output .= "'>";
 			$output .= "<img class='" . esc_html__($urlboxOptions['img_class']) . "' src='" . esc_html__($downloadedUrl) . "'/>";
-			$output .= "</div>";
+			$output .= "</figure>";
 			if (isset($urlboxOptions['debug']) and $urlboxOptions['debug'] == 'true')
-				$output .= "</div>";
+				$output .= "</figure>";
 			return $output;
 		}
 
@@ -495,7 +498,7 @@ if (!class_exists('Urlbox')) {
 			$format = $urlboxOptions['format'];
 			$_parts = [];
 			foreach ($urlboxOptions as $key => $value) {
-				if (!in_array($key, array('api_key', 'api_secret', 'format', 'customcss', 'imagesize', 'div_class', 'img_class'))) {
+				if (!in_array($key, array('api_key', 'api_secret', 'format', 'customcss', 'imagesize', 'figure_class', 'img_class'))) {
 					if (!empty($value)) {
 						$_parts[] = "$key=$value";
 					}
