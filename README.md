@@ -46,7 +46,7 @@ Using the plugin is very easy:
 
 `[urlbox url=google.com full_page=true thumbnail_width=400] // display a full_page screenshot of google, thumbnailed down to 400px wide`
 
-- The plugin wraps the `<img>` element inside a `<figure>` element. You can set the class of both of these elements from the settings page (which will apply to all screenshots), and also override these settings for individual screenshotscby passing in the options in the shortcode:
+- The plugin wraps the `<img>` element inside a `<figure>` element. You can set the class of both of these elements from the settings page (which will apply to all screenshots), and also override these settings for individual screenshots by passing in the options in the shortcode:
 
 `[urlbox url=google.com div_class=my-div-class img_class=my-img-class ] // change the css classes of the elements`
 
