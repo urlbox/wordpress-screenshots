@@ -1,5 +1,5 @@
 ﻿=== Urlbox Screenshots ===
-Contributors: Chris Roebuck, Ankur Gurha
+Contributors: Chris Roebuck, Ankur Gurha, James Ogilvie
 Author: Urlbox
 Tags: screenshot,screenshots,puppeteer,playwright,urlbox,url screenshot,url to png, url2png,website screenshots,retina screenshots,responsive screenshots,wordpress,plugin,integration
 Requires at least: 3.3
@@ -36,7 +36,7 @@ The plugin wraps the `<img>` element inside a `<figure>` element. You can set th
 
 * WordPress
 * A Urlbox Account
-* Yoyr Urlbox API key and secret (From: <https://urlbox.io>)
+* Your Urlbox API key and secret (From: <https://urlbox.io>)
 
 == Installation ==
 
@@ -52,7 +52,7 @@ The plugin wraps the `<img>` element inside a `<figure>` element. You can set th
 = How to change options from the shortcode
 
 Pass them in like so: [urlbox url=www.bbc.co.uk width=100]
-See https://urlbox.io/docs/options for default values
+See <https://urlbox.io/docs/options> for default values
 
 == Screenshots ==
 
