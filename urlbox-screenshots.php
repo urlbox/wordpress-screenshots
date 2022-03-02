@@ -13,7 +13,7 @@
  * Plugin Name: Urlbox Screenshots
  * Plugin URI:  https://urlbox.io
  * Description: Take screenshots of websites and display them on your wordpress site.
- * Version:     1.5
+ * Version:     1.5.1
  * Author:      Urlbox
  * Author URI:  https://github.com/urlbox-io/wordpress-screenshots
  * Text Domain: urlbox-screenshots
@@ -53,7 +53,7 @@ if (!class_exists('Urlbox')) {
 			'customcss' => '',
 			'imagesize' => '',
 			'debug' => '',
-			'div_class' => '',
+			'figure_class' => '',
 			'img_class' => ''
 		);
 
@@ -173,8 +173,8 @@ if (!class_exists('Urlbox')) {
 					"type" => "checkbox"
 				),
 				array(
-					"id" => "div_class",
-					"name" => "Wrapping Div CSS class",
+					"id" => "figure_class",
+					"name" => "Figure element CSS class",
 					"type" => "text",
 					"section" => 'html'
 				),
@@ -276,7 +276,7 @@ if (!class_exists('Urlbox')) {
 
 			add_settings_section(
 				'html',
-				'Html Options',
+				'HTML Options',
 				array($this, 'printHtmlSectionInfo'),
 				'urlbox-screenshots'
 			);
@@ -421,17 +421,16 @@ if (!class_exists('Urlbox')) {
 		 */
 		public function printAuthSectionInfo()
 		{
-			print 'Enter your API Key and Secret below:</br></br>';
-			print 'You can retrieve them by logging in at <a href="https://urlbox.io">Urlbox</a>';
+			print 'Enter your API Key and Secret here. You can get these from your <a href="https://urlbox.io/dashboard">Urlbox Dashboard</a>.';
 		}
 
 		public function printSectionInfo()
 		{
-			print 'Enter your default options below';
+			print 'You can edit the default options here. See <a href="https://urlbox.io/docs/options">Urlbox Options Reference</a> for default values.';
 		}
 		public function printHtmlSectionInfo()
 		{
-			print 'Enter HTML options below';
+			print 'You can add classes to the wrapping ' . htmlentities("<figure>") . ' element and the inside ' . htmlentities("<img>") . ' element here.';
 		}
 
 		/**
@@ -480,11 +479,14 @@ if (!class_exists('Urlbox')) {
 			$format = $urlboxOptions['format'];
 			$downloadedUrl = $url;
 			// $this->download_image($url, $format);
-			$output .= "<div class='" . esc_html__($urlboxOptions['div_class']) . "'>";
+			$output .= "<figure class='wp-block-image";
+			if (isset($urlboxOptions['figure_class']))
+				$output .= " " . esc_html__($urlboxOptions['figure_class']);
+			$output .= "'>";
 			$output .= "<img class='" . esc_html__($urlboxOptions['img_class']) . "' src='" . esc_html__($downloadedUrl) . "'/>";
-			$output .= "</div>";
+			$output .= "</figure>";
 			if (isset($urlboxOptions['debug']) and $urlboxOptions['debug'] == 'true')
-				$output .= "</div>";
+				$output .= "</figure>";
 			return $output;
 		}
 
@@ -495,7 +497,7 @@ if (!class_exists('Urlbox')) {
 			$format = $urlboxOptions['format'];
 			$_parts = [];
 			foreach ($urlboxOptions as $key => $value) {
-				if (!in_array($key, array('api_key', 'api_secret', 'format', 'customcss', 'imagesize', 'div_class', 'img_class'))) {
+				if (!in_array($key, array('api_key', 'api_secret', 'format', 'customcss', 'imagesize', 'figure_class', 'img_class'))) {
 					if (!empty($value)) {
 						$_parts[] = "$key=$value";
 					}
