@@ -94,7 +94,7 @@ if (!class_exists('Urlbox')) {
 					"id" => "format",
 					"name" => "Image Format",
 					"type" => "radio",
-					"options" => array('png' => "PNG", 'jpeg' => "JPEG")
+					"options" => array('png' => "PNG", 'jpeg' => "JPEG", 'pdf' => "PDF", 'svg' => "SVG", 'webp' => "WEBP",'html' => "HTML"),
 				),
 				// array(
 				// 	"id" => "url",
@@ -360,6 +360,7 @@ if (!class_exists('Urlbox')) {
 			foreach ($input as $key => $val) {
 				if (isset($input[$key])) {
 					foreach ($this->fields as $field) {
+
 						if (in_array($key, array('url', 'user_agent'))) {
 							$draft = rawurlencode($val);
 							$draft = str_replace('%28', '(', $draft);
@@ -396,6 +397,9 @@ if (!class_exists('Urlbox')) {
 									if ($val == 1 or $val == 'true') {
 										$new_input[$key] = 'true';
 									}
+									if ($val == 0 or $val == 'false') {
+										$new_input[$key] = 'false';
+									}
 									break;
 								case 'radio':
 									if (array_key_exists($val, $field['options'])) {
@@ -406,6 +410,9 @@ if (!class_exists('Urlbox')) {
 									$new_input[$key] = $val;
 									break;
 							}
+						}
+						else {
+							$new_input[$key] = $val;
 						}
 					}
 				} else {
@@ -448,13 +455,17 @@ if (!class_exists('Urlbox')) {
 		 */
 		public function urlbox_shortcode($atts)
 		{
-
 			$option_values = get_option($this->option_name, array());
 			$data = shortcode_atts($this->default_values, $option_values);
 			$data = shortcode_atts($data, $atts);
+			
+			// echo '<pre>'; print_r($data); echo '</pre>';
 
 			// setting defaults if needed
 			$urlboxOptions = $this->sanitize($data);
+			$urlboxOptions = array_merge($urlboxOptions,$atts);
+			// echo '<pre>'; print_r($urlboxOptions); echo '</pre>';
+
 			$urlboxOptions['url'] = empty($data['url']) ? 'google.com' : $data['url'];
 			$output = '';
 			if (empty($urlboxOptions['api_key']) or empty($urlboxOptions['api_secret'])) {
