@@ -405,6 +405,8 @@ if (!class_exists('Urlbox')) {
 							}
 						}
 					}
+				} else {
+					$new_input[$key] = $val;
 				}
 			}
 			return $new_input;
