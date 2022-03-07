@@ -1,10 +1,10 @@
 ﻿=== Urlbox Screenshots ===
 Contributors: Chris Roebuck, Ankur Gurha, James Ogilvie
 Author: Urlbox
-Tags: screenshot,screenshots,puppeteer,playwright,urlbox,url screenshot,url to png, url2png,website screenshots,retina screenshots,responsive screenshots,wordpress,plugin,integration
+Tags: screenshot,screenshots,puppeteer,playwright,urlbox,url screenshot,url to png, url2png,wordpress website screenshots,retina screenshots,responsive screenshots,wordpress,plugin,integration
 Requires at least: 3.3
 Tested up to: 5.9
-Stable tag: 1.5.1
+Stable tag: 1.5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 

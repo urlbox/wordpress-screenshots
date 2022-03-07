@@ -5,7 +5,7 @@
  *
  * @package     Urlbox
  * @author      Urlbox
- * @copyright   2021 Urlbox Ltd
+ * @copyright   2022 Urlbox Ltd
  * @license     GPL-2.0+
  * @since       1.0.0
  *
@@ -392,16 +392,10 @@ if (!class_exists('Urlbox')) {
 									}
 									break;
 								case 'checkbox':
-									// if(array_key_exists($val, array('true','false'))) {
 									// convert 0,1 to false,true for boolean keys
-									if (in_array($key, array('retina', 'disable_js', 'full_page', 'force', 'debug'))) {
-										if ($val == 1 or $val == 'true') {
-											$new_input[$key] = 'true';
-										}
+									if ($val == 1 or $val == 'true') {
+										$new_input[$key] = 'true';
 									}
-									// if($new_input['disable_js'] == 'true' and $new_input['full_page'] == 'true'){
-
-									// }
 									break;
 								case 'radio':
 									if (array_key_exists($val, $field['options'])) {
