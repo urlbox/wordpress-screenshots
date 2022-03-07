@@ -402,6 +402,9 @@ if (!class_exists('Urlbox')) {
 										$new_input[$key] = $val;
 									}
 									break;
+								default:
+									$new_input[$key] = $val;
+									break;
 							}
 						}
 					}
