@@ -66,6 +66,9 @@ See <https://urlbox.io/docs/options> for default values
 
 == Changelog ==
 
+= 1.5.2 =
+Updated shortcode logic to allow all Urlbox API options
+
 = 1.5.1 =
 Updated HTML output and instructions for the block editor; tested with WordPress 5.9
 
