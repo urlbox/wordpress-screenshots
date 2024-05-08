@@ -54,7 +54,8 @@ if (!class_exists('Urlbox')) {
 			'imagesize' => '',
 			'debug' => '',
 			'figure_class' => '',
-			'img_class' => ''
+			'img_class' => '',
+			'alt' => '',
 		);
 
 		/**
@@ -493,7 +494,10 @@ if (!class_exists('Urlbox')) {
 			if (isset($urlboxOptions['figure_class']))
 				$output .= " " . esc_html__($urlboxOptions['figure_class']);
 			$output .= "'>";
-			$output .= "<img class='" . esc_html__($urlboxOptions['img_class']) . "' src='" . esc_html__($downloadedUrl) . "'/>";
+			$output .= "<img class='" . esc_html__($urlboxOptions['img_class']) . "' src='" . esc_html__($downloadedUrl) . "'";
+			if (isset($urlboxOptions['alt']) && !empty($urlboxOptions['alt']))
+				$output .= " alt='" . esc_attr($urlboxOptions['alt']) . "'";
+			$output .= "/>";
 			$output .= "</figure>";
 			if (isset($urlboxOptions['debug']) and $urlboxOptions['debug'] == 'true')
 				$output .= "</figure>";
