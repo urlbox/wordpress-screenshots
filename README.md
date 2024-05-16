@@ -2,13 +2,13 @@
 
 🎉 Easily display screenshots of websites right in your WordPress site 🎉
 
-Uses the [Urlbox](https://urlbox.io) API to generate website screenshots from any URL and displays them in your WordPress site using a simple shortcode.
+Uses the [Urlbox](https://urlbox.com) API to generate website screenshots from any URL and displays them in your WordPress site using a simple shortcode.
 
 Just add the `[urlbox]` shortcode to any of your posts with the Shortcode block.
 
 ## Basic Example
 
-Just use `[urlbox url=urlbox.io thumb_width=600]` in a Shortcode block.
+Just use `[urlbox url=urlbox.com thumb_width=600]` in a Shortcode block.
 
 This will generate the following screenshot:
 
@@ -28,7 +28,7 @@ And the resulting screenshot will look like this:
 - Urlbox Account
 - Urlbox API key and secret
 
-[Sign up to obtain your API Key and Secret at urlbox.io](https://urlbox.io)
+[Sign up to obtain your API Key and Secret at urlbox.com](https://urlbox.com)
 
 ## Usage
 
@@ -74,6 +74,10 @@ See the plugin settings page for all possible options
 
 ## Changelog
 
+### 1.5.3 
+
+Updates shortcode logic to allow an 'alt' attribute in the <img> tag
+
 ### 1.5.2
 
 Updated shortcode logic to allow all Urlbox API options
@@ -99,3 +103,67 @@ Fixed minor bugs and tested with Wordpress 5.7-beta
 ### 1.0
 
 Initial Release!
+
+## Releasing/Updating the Plugin on Wordpress
+
+[Wordpress URLBox Screenshots Plugin for Developers](https://wordpress.org/plugins/urlbox-screenshots/#developers)
+
+### Overview
+
+By creating a new tagged release with the zipped repo, GH actions should automatically update the wordpress.org repository.
+
+Wordpress uses SVN, similar to Github.
+
+The plugin is stored centrally on their servers, so any changes need to be pushed to their server using the svn CLI (there are also GUI's).
+
+The publicly available svn repo is available for anyone to check out.
+
+Simply go to:
+
+https://plugins.svn.wordpress.org/urlbox-screenshots/
+
+And you'll see the publicly available repo served by apache.
+
+NOTE - When updating to a new tag, ensure that the tag number is updated in the wordpress meta fields in both the readme.txt and the core .php file.
+
+### Steps to update manually via SVN:
+
+If the GH actions deployment isn't working you can update the plugin manually via SVN.
+
+1. Checkout the svn repo
+
+``` svn checkout https://plugins.svn.wordpress.org/urlbox-screenshots/ ```
+
+2. Make changes from Github
+
+Copy any files which changed in the github repo into the svn repo's /trunk directory. This would typically be the readme.txt (which Wordpress uses for your readme on their website) and urlbox-screenshots.php.
+
+The /trunk directory is the 'working' or 'dev' directory. It is where unstable releases would typically sit.
+
+NOTE - Make sure that readme.txt and urlbox-screenshots.php now includes the latest tag number.
+
+3. make a new tag by copying the trunk folder into the new tag number (use versioning major/minor/patch):
+
+``` cp /trunk /tags/1.5.3 ```
+
+Check the svn status:
+
+``` svn status ```
+
+Any new files will have a `?` beside them, and any modified will have `M` beside them.
+
+Add new files using:
+
+``` svn add your/filepath ```
+
+4. Finally, by committing them changes will be pushed to the remote server:
+
+``` svn commit --username=USERNAMEGOESHERE --password=PASSWORDGOESHERE ```
+
+Ensure the changes took effect by going [here](https://wordpress.org/plugins/urlbox-screenshots/#developers)
+
+#### Further resources
+
+https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/
+
+See every publicly served github plugin - https://plugins.svn.wordpress.org/
