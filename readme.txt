@@ -12,11 +12,11 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 🎉 Easily display website screenshots of any URL in your Wordpress site 🎉
 
-This plugin uses the Urlbox API to generate website screenshots and display them on your site. Please note the Urlbox API is a paid service - you can sign up for a trial at <https://urlbox.io>.
+This plugin uses the Urlbox API to generate website screenshots and display them on your site. Please note the Urlbox API is a paid service - you can sign up for a trial at <https://urlbox.com>.
 
 **How to use the plugin**
 
-1. First activate the plugin and fill in your Urlbox.io API Key and Secret in the settings page.
+1. First activate the plugin and fill in your Urlbox.com API Key and Secret in the settings page.
 
 2. (Optional) You can set default options for your screenshots such as width, height, and thumbnail width on the plugin settings page.
 
@@ -36,7 +36,7 @@ The plugin wraps the `<img>` element inside a `<figure>` element. You can set th
 
 * WordPress
 * A Urlbox Account
-* Your Urlbox API key and secret (From: <https://urlbox.io>)
+* Your Urlbox API key and secret (From: <https://urlbox.com>)
 
 == Installation ==
 
@@ -52,7 +52,7 @@ The plugin wraps the `<img>` element inside a `<figure>` element. You can set th
 = How to change options from the shortcode
 
 Pass them in like so: [urlbox url=www.bbc.co.uk width=100]
-See <https://urlbox.io/docs/options> for default values
+See <https://urlbox.com/docs/options> for default values
 
 == Screenshots ==
 
