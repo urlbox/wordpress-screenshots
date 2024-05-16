@@ -106,7 +106,7 @@ Initial Release!
 
 ## Releasing/Updating the Plugin on Wordpress
 
-[Wordpress URLBox Screenshots Plugin for Developers](https://wordpress.org/plugins/urlbox-screenshots/#developers)
+[URLBox Screenshots Wordpress Plugin Homepage](https://wordpress.org/plugins/urlbox-screenshots/#developers)
 
 ### Overview
 
@@ -116,13 +116,7 @@ Wordpress uses SVN, similar to Github.
 
 The plugin is stored centrally on their servers, so any changes need to be pushed to their server using the svn CLI (there are also GUI's).
 
-The publicly available svn repo is available for anyone to check out.
-
-Simply go to:
-
-https://plugins.svn.wordpress.org/urlbox-screenshots/
-
-And you'll see the publicly available repo served by apache.
+The publicly available svn repo is available for anyone to check out. Simply go [here](https://plugins.svn.wordpress.org/urlbox-screenshots/), and you'll see the publicly available repo served by apache.
 
 NOTE - When updating to a new tag, ensure that the tag number is updated in the wordpress meta fields in both the readme.txt and the core .php file.
 
@@ -160,7 +154,7 @@ Add new files using:
 
 ``` svn commit --username=USERNAMEGOESHERE --password=PASSWORDGOESHERE ```
 
-Ensure the changes took effect by going [here](https://wordpress.org/plugins/urlbox-screenshots/#developers)
+Ensure the changes took effect by going [here](https://wordpress.org/plugins/urlbox-screenshots/#developers).
 
 #### Further resources
 
