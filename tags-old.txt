@@ -1,0 +1,1 @@
+screenshot,screenshots,puppeteer,playwright,urlbox,url screenshot,url to png, url2png,wordpress website screenshots,retina screenshots,responsive screenshots,integration

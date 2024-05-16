@@ -1,7 +1,7 @@
 ﻿=== Urlbox Screenshots ===
 Contributors: Chris Roebuck, Ankur Gurha, James Ogilvie
 Author: Urlbox
-Tags: screenshot,screenshots,puppeteer,playwright,urlbox,url screenshot,url to png, url2png,wordpress website screenshots,retina screenshots,responsive screenshots,integration
+Tags: screenshot,screenshots,puppeteer,playwright,url to png
 Requires at least: 3.3
 Tested up to: 6.5
 Stable tag: 1.5.3
