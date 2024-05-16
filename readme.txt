@@ -1,10 +1,10 @@
 ﻿=== Urlbox Screenshots ===
 Contributors: Chris Roebuck, Ankur Gurha, James Ogilvie
 Author: Urlbox
-Tags: screenshot,screenshots,puppeteer,playwright,urlbox,url screenshot,url to png, url2png,wordpress website screenshots,retina screenshots,responsive screenshots,wordpress,plugin,integration
+Tags: screenshot,screenshots,puppeteer,playwright,urlbox,url screenshot,url to png, url2png,wordpress website screenshots,retina screenshots,responsive screenshots,integration
 Requires at least: 3.3
-Tested up to: 5.9
-Stable tag: 1.5.2
+Tested up to: 6.5
+Stable tag: 1.5.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,9 @@ See <https://urlbox.io/docs/options> for default values
 * None at this time
 
 == Changelog ==
+
+= 1.5.3 =
+Updates shortcode logic to allow an 'alt' attribute in the <img> tag
 
 = 1.5.2 =
 Updated shortcode logic to allow all Urlbox API options
