@@ -319,7 +319,7 @@ if (!class_exists('Urlbox')) {
 					break;
 				case "checkbox":
 					print "<input type='checkbox' value='1' class='code' name='$name' id='$id'
-						 " . checked($value, 'true', false) . "/>";
+							" . checked($value, '1', false) . "/>";
 					if ($section !== 'required_section') {
 						print "<div class='description'>$desc</div>";
 					}
@@ -394,13 +394,8 @@ if (!class_exists('Urlbox')) {
 									}
 									break;
 								case 'checkbox':
-									// convert 0,1 to false,true for boolean keys
-									if ($val == 1 or $val == 'true') {
-										$new_input[$key] = 'true';
-									}
-									if ($val == 0 or $val == 'false') {
-										$new_input[$key] = 'false';
-									}
+									// Convert 1, true, or 'true' to '1'; all else to '0'
+									$new_input[$key] = ($val == '1' || $val == 'true' || $val === true) ? '1' : '0';
 									break;
 								case 'radio':
 									if (array_key_exists($val, $field['options'])) {
