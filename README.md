@@ -74,6 +74,10 @@ See the plugin settings page for all possible options
 
 ## Changelog
 
+### 1.5.4 
+
+Fixes minor bug introduced in 1.5.3 - Checkbox state wasn't held in settings.
+
 ### 1.5.3 
 
 Updates shortcode logic to allow an 'alt' attribute in the <img> tag
