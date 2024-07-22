@@ -1,10 +1,10 @@
 ﻿=== Urlbox Screenshots ===
-Contributors: Chris Roebuck, Ankur Gurha, James Ogilvie
+Contributors: Chris Roebuck, Ankur Gurha, James Ogilvie, Arnold Cubici-Jones
 Author: Urlbox
 Tags: screenshot,screenshots,puppeteer,playwright,url to png
 Requires at least: 3.3
 Tested up to: 6.5
-Stable tag: 1.5.4
+Stable tag: 1.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,10 @@ See <https://urlbox.com/docs/options> for default values
 * None at this time
 
 == Changelog ==
+
+= 1.6.0 =
+
+Introduce proxy logic, so users can make urlbox screenshot requests via their proxy which is set in the plugin settings.
 
 = 1.5.4 =
 

@@ -13,7 +13,7 @@
  * Plugin Name: Urlbox Screenshots
  * Plugin URI:  https://urlbox.io
  * Description: Take screenshots of websites and display them on your wordpress site.
- * Version:     1.5.4
+ * Version:     1.6.0
  * Author:      Urlbox
  * Author URI:  https://github.com/urlbox-io/wordpress-screenshots
  * Text Domain: urlbox-screenshots

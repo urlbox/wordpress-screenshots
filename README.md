@@ -74,6 +74,10 @@ See the plugin settings page for all possible options
 
 ## Changelog
 
+### 1.6.0
+
+Introduce proxy logic, so users can make urlbox screenshot requests via their proxy which is set in the plugin settings.
+
 ### 1.5.4 
 
 Fixes minor bug introduced in 1.5.3 - Checkbox state wasn't held in settings.
@@ -111,6 +115,14 @@ Initial Release!
 ## Releasing/Updating the Plugin on Wordpress
 
 [URLBox Screenshots Wordpress Plugin Homepage](https://wordpress.org/plugins/urlbox-screenshots/#developers)
+
+### Testing
+
+You can test the plugin by zipping it from the root file, then importing the zipped file using a locally running Wordpress instance, or using this playground:
+
+'''https://playground.wordpress.net/?storage=browser&php=8.0&wp=6.5&networking=yes'''
+
+Ensure that you're on at least PHP 8, Wordpress 6.5 and you have networking enabled.
 
 ### Overview
 
