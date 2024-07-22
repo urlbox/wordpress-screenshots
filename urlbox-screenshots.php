@@ -56,6 +56,12 @@ if (!class_exists('Urlbox')) {
 			'figure_class' => '',
 			'img_class' => '',
 			'alt' => '',
+			'use_proxy' => '',
+			'username' => '',
+			'password' => '',
+			'hostname' => '',
+			'port' => '',
+			'protocol' => 'https',
 		);
 
 		/**
@@ -184,7 +190,45 @@ if (!class_exists('Urlbox')) {
 					"name" => "Image element CSS class",
 					"type" => "text",
 					"section" => 'html'
-				)
+				),
+				array(
+					"id" => "use_proxy",
+					"name" => "Use Proxy",
+					"type" => "checkbox",
+					"section" => 'proxy'
+				),
+				array(
+					"id" => "username",
+					"name" => "Proxy Username",
+					"type" => "text",
+					"section" => 'proxy'
+				),
+				array(
+					"id" => "password",
+					"name" => "Proxy Password",
+					"type" => "text",
+					"section" => 'proxy'
+				),
+				array(
+					"id" => "hostname",
+					"name" => "Proxy Hostname",
+					"type" => "text",
+					"section" => 'proxy'
+				),
+				array(
+					"id" => "port",
+					"name" => "Proxy Port",
+					"type" => "number",
+					"section" => 'proxy'
+				),
+				array(
+					"id" => "protocol",
+					"name" => "Proxy Protocol",
+					"type" => "radio",
+					"options" => array('https' => "HTTPS", 'http' => "HTTP"),
+					"default" => "https",
+					"section" => 'proxy'
+				),
 			);
 		}
 
@@ -194,8 +238,36 @@ if (!class_exists('Urlbox')) {
 			if (is_admin()) {
 				add_action('admin_menu', array($this, 'add_urlbox_options_page'));
 				add_action('admin_init', array($this, 'add_fields'));
+				add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
+        add_action('wp_ajax_test_proxy_connection', array($this, 'ajax_test_proxy_connection'));
 			}
 			add_shortcode('urlbox', array($this, 'urlbox_shortcode'));
+
+			add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
+			add_action('wp_ajax_nopriv_proxy_fetch_render_url', array($this, 'ajax_proxy_fetch_render_url'));
+			add_action('wp_ajax_proxy_fetch_render_url', array($this, 'ajax_proxy_fetch_render_url'));
+		}
+
+		/**
+		 * Enqueue admin scripts
+		 */
+		public function enqueue_admin_scripts()
+		{
+			wp_enqueue_script('urlbox-admin-js', plugin_dir_url(__FILE__) . 'js/urlbox-admin.js', array('jquery'), null, true);
+			wp_localize_script('urlbox-admin-js', 'urlbox_admin_ajax', array(
+				'ajax_url' => admin_url('admin-ajax.php'),
+				'nonce' => wp_create_nonce('urlbox_admin_nonce')
+			));
+		}
+
+		public function enqueue_scripts()
+		{
+			wp_enqueue_style('urlbox-style', plugin_dir_url(__FILE__) . 'css/urlbox-style.css');
+			wp_enqueue_script('urlbox-js', plugin_dir_url(__FILE__) . 'js/urlbox.js', array('jquery'), null, true);
+			wp_localize_script('urlbox-js', 'urlbox_ajax', array(
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('urlbox_proxy_nonce')
+    	));
 		}
 
 		public function add_urlbox_options_page()
@@ -244,7 +316,12 @@ if (!class_exists('Urlbox')) {
 					<?php
 					settings_fields($this->option_name);
 					do_settings_sections('urlbox-screenshots');
-					submit_button('Save Settings');
+					?>
+					<div style="display: flex; align-items: center; margin-top: 20px;">
+						<button id="test-proxy-connection" class="button button-secondary"><?php _e('Test Proxy Connection', 'urlbox') ?></button>
+						<div id="proxy-test-result" style="margin-left: 10px;"></div>
+					</div>
+					<?php submit_button('Save Settings');
 					?>
 				</form>
 			</div>
@@ -279,6 +356,13 @@ if (!class_exists('Urlbox')) {
 				'html',
 				'HTML Options',
 				array($this, 'printHtmlSectionInfo'),
+				'urlbox-screenshots'
+			);
+
+			add_settings_section(
+				'proxy',
+				'Proxy Options',
+				array($this, 'printProxySectionInfo'),
 				'urlbox-screenshots'
 			);
 
@@ -320,7 +404,7 @@ if (!class_exists('Urlbox')) {
 				case "checkbox":
 					print "<input type='checkbox' value='1' class='code' name='$name' id='$id'
 							" . checked($value, '1', false) . "/>";
-					if ($section !== 'required_section') {
+							if (!in_array($section, array('required_section', 'proxy'))) {
 						print "<div class='description'>$desc</div>";
 					}
 					return;
@@ -329,7 +413,7 @@ if (!class_exists('Urlbox')) {
 						// $checked = 
 						print "<input type='radio' name='$name' value='$option_value' " . checked($value, $option_value, false) . "/>$option_text<span style='margin-left: 15px' />";
 					}
-					if ($section !== 'required_section') {
+					if (!in_array($section, array('required_section', 'proxy'))) {
 						print "<div class='description'>$desc</div>";
 					}
 					return;
@@ -436,6 +520,14 @@ if (!class_exists('Urlbox')) {
 		}
 
 		/**
+		 * Print the Section text
+		 */
+		public function printProxySectionInfo()
+		{
+			print 'You can add proxy settings here.';
+		}
+
+		/**
 		 * PHP 4 Compatible Constructor
 		 */
 		function Urlbox()
@@ -492,6 +584,9 @@ if (!class_exists('Urlbox')) {
 			$output .= "<img class='" . esc_html__($urlboxOptions['img_class']) . "' src='" . esc_html__($downloadedUrl) . "'";
 			if (isset($urlboxOptions['alt']) && !empty($urlboxOptions['alt']))
 				$output .= " alt='" . esc_attr($urlboxOptions['alt']) . "'";
+			if (!empty($urlboxOptions['use_proxy']) && $urlboxOptions['use_proxy'] && ! get_transient($urlboxOptions['url'])) {
+				$output .=  " data-render-url='" . esc_attr($urlboxOptions['url']) . "'";
+			}
 			$output .= "/>";
 			$output .= "</figure>";
 			if (isset($urlboxOptions['debug']) and $urlboxOptions['debug'] == 'true')
@@ -501,12 +596,20 @@ if (!class_exists('Urlbox')) {
 
 		public function generateUrl($urlboxOptions)
 		{
+			// If proxy is enabled, fetch the render URL using the proxy
+			if (!empty($urlboxOptions['use_proxy']) && $urlboxOptions['use_proxy']) {
+				if ($render_url = get_transient($urlboxOptions['url'])) {
+					return $render_url;
+				}
+				return plugin_dir_url(__FILE__) . 'images/default.png';
+    	}
+
 			$APIKEY = $urlboxOptions['api_key'];
 			$SECRET = $urlboxOptions['api_secret'];
 			$format = $urlboxOptions['format'];
 			$_parts = [];
 			foreach ($urlboxOptions as $key => $value) {
-				if (!in_array($key, array('api_key', 'api_secret', 'format', 'customcss', 'imagesize', 'figure_class', 'img_class'))) {
+				if (!in_array($key, array('api_key', 'api_secret', 'format', 'customcss', 'imagesize', 'figure_class', 'img_class', 'alt', 'use_proxy', 'username', 'password', 'hostname', 'port', 'protocol'))) {
 					if (!empty($value)) {
 						$_parts[] = "$key=$value";
 					}
@@ -515,6 +618,116 @@ if (!class_exists('Urlbox')) {
 			$query_string = implode("&", $_parts);
 			$TOKEN = hash_hmac("sha1", $query_string, $SECRET);
 			return "https://api.urlbox.io/v1/$APIKEY/$TOKEN/$format?$query_string";
+		}
+
+		/**
+		 * Fetches the render URL using a proxy
+		 */
+		private function proxy_fetch_render_url($urlboxOptions) {
+			$body = [
+        'url' => $urlboxOptions['url'],  
+        'proxy' => $this->build_proxy_url($urlboxOptions)
+    	];
+
+			$response = wp_remote_post('https://api.urlbox.io/v1/render/sync', [
+				'headers'   => [
+					'Content-Type' => 'application/json',
+					'Authorization' => 'Bearer ' . $urlboxOptions['api_secret']
+				],
+				'body'      => json_encode($body),
+				'timeout'   => 25
+			]);
+
+			$response_body = json_decode(wp_remote_retrieve_body($response), true);
+			
+			// If an error occurred, log it proceed with the normal URL generation
+			if (is_wp_error($response_body)) {
+				error_log($response_body->get_error_message());
+				return new WP_Error('urlbox_error', $response_body->get_error_message()); 
+			}
+
+			// If response contains an error, return it as a WP_Error
+			if (isset($response_body['error'])) {
+				return new WP_Error('urlbox_error', $response_body['error']['message']);
+			}
+
+			return $response_body['renderUrl'];
+		}
+
+		/**
+		 * Builds the proxy URL
+		 */
+		private function build_proxy_url($urlboxOptions)
+		{
+			return $urlboxOptions['protocol'] . '://' . $urlboxOptions['username'] . ':' . 
+				$urlboxOptions['password'] . '@' . $urlboxOptions['hostname'] . ':' . 
+				$urlboxOptions['port'];
+		}
+
+		/**
+		 * Test the proxy connection
+		 */
+		public function ajax_test_proxy_connection() 
+		{
+			check_ajax_referer('urlbox_admin_nonce', 'nonce');
+
+			$urlbox_data = $_POST['urlbox_data'];
+
+			foreach ($urlbox_data as $key => $value) {
+				if (in_array($key, ['username', 'password', 'hostname', 'port', 'protocol'])) {
+					if (empty($value)) {
+						wp_send_json_error("Error: The field '$key' is empty.");
+					}
+					$urlbox_data[$key] = sanitize_text_field($value);
+				}				
+			}
+
+			$urlbox_data['url'] = 'https://google.com';
+			$urlbox_data['proxy'] = $this->build_proxy_url($urlbox_data);
+
+			$response_body = $this->proxy_fetch_render_url($urlbox_data);
+
+			if (is_wp_error($response_body)) {
+				wp_send_json_error('Error: ' . $response_body->get_error_message());
+			}
+
+			wp_send_json_success('Proxy connection successful!');		
+		}
+
+		/**
+		 * Ajax call to fetch the render URL using a proxy
+		 */
+		public function ajax_proxy_fetch_render_url() {
+			check_ajax_referer('urlbox_proxy_nonce', 'nonce');
+
+			$urlboxOptions = get_option($this->option_name, array());
+			$urlboxOptions['url'] = sanitize_text_field($_POST['url']);
+
+			$default = [
+				'rendered_url' => '',
+				'url' => $urlboxOptions['url']
+			];
+
+			$rendered_url = $this->proxy_fetch_render_url($urlboxOptions);
+
+			if (! $rendered_url) {
+				wp_send_json_success($default);
+				return;
+			}
+
+			if (is_wp_error($rendered_url)) {
+				error_log('Error: ' . $rendered_url->get_error_message());
+        wp_send_json_error('Error: ' . $rendered_url->get_error_message());
+        return;
+			}
+
+			// Set transient for 30 days
+			set_transient($urlboxOptions['url'], $rendered_url, 60 * 60 * 24 * 30);
+
+			wp_send_json_success([
+				'rendered_url' => $rendered_url,
+				'url' => $urlboxOptions['url']
+			]);
 		}
 
 		// read admin options
