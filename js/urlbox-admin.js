@@ -27,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       const result = await response.json();
-      console.log(result);
       resultDiv.textContent = result.data;
       resultDiv.style.color = result.success ? "green" : "red";
     } catch (error) {
