@@ -623,18 +623,18 @@ if (!class_exists('Urlbox')) {
 		/**
 		 * Fetches the render URL using a proxy
 		 */
-		private function proxy_fetch_render_url($urlboxOptions) {
+		public function proxy_fetch_render_url($urlboxOptions) {
 			$body = [
-        'url' => $urlboxOptions['url'],  
-        'proxy' => $this->build_proxy_url($urlboxOptions)
-    	];
+                'url' => $urlboxOptions['url'],
+                'proxy' => $this->build_proxy_url($urlboxOptions)
+    	    ];
 
 			$response = wp_remote_post('https://api.urlbox.io/v1/render/sync', [
 				'headers'   => [
 					'Content-Type' => 'application/json',
 					'Authorization' => 'Bearer ' . $urlboxOptions['api_secret']
 				],
-				'body'      => json_encode($body),
+				'body'      => $body,
 				'timeout'   => 25
 			]);
 
