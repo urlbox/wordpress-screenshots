@@ -596,24 +596,23 @@ if (!class_exists('Urlbox')) {
 
 		public function generateUrl($urlboxOptions)
 		{
-			// If proxy is enabled, fetch the render URL using the proxy
-			if (!empty($urlboxOptions['use_proxy']) && $urlboxOptions['use_proxy']) {
-				if ($render_url = get_transient($urlboxOptions['url'])) {
-					return $render_url;
-				}
-				return plugin_dir_url(__FILE__) . 'images/default.png';
-    	}
+			if (array_key_exists('use_proxy', $urlboxOptions) && $urlboxOptions['use_proxy']) {
+			    if ($render_url = get_transient($urlboxOptions['url'])) {
+				return $render_url;
+			    }
+			    return plugin_dir_url(__FILE__) . 'images/default.png';
+			}
 
 			$APIKEY = $urlboxOptions['api_key'];
 			$SECRET = $urlboxOptions['api_secret'];
 			$format = $urlboxOptions['format'];
 			$_parts = [];
 			foreach ($urlboxOptions as $key => $value) {
-				if (!in_array($key, array('api_key', 'api_secret', 'format', 'customcss', 'imagesize', 'figure_class', 'img_class', 'alt', 'use_proxy', 'username', 'password', 'hostname', 'port', 'protocol'))) {
-					if (!empty($value)) {
-						$_parts[] = "$key=$value";
-					}
+			    if (!in_array($key, array('api_key', 'api_secret', 'format', 'customcss', 'imagesize', 'figure_class', 'img_class', 'alt', 'use_proxy', 'username', 'password', 'hostname', 'port', 'protocol'))) {
+				if (!empty($value)) {
+				    $_parts[] = "$key=$value";
 				}
+			    }
 			}
 			$query_string = implode("&", $_parts);
 			$TOKEN = hash_hmac("sha1", $query_string, $SECRET);
@@ -682,7 +681,7 @@ if (!class_exists('Urlbox')) {
 				}				
 			}
 
-			$urlbox_data['url'] = 'https://google.com';
+			$urlbox_data['url'] = 'google.com';
 			$urlbox_data['proxy'] = $this->build_proxy_url($urlbox_data);
 
 			$response_body = $this->proxy_fetch_render_url($urlbox_data);
