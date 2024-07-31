@@ -74,6 +74,10 @@ See the plugin settings page for all possible options
 
 ## Changelog
 
+### 1.6.1
+
+Performs a refactor of the plugin, fixing a bug in the proxy logic, adding more documentation to docblocks, improving security issues, and decoupling proxy logic into a specific test method for the proxy connection and a generalised POST /sync method.
+
 ### 1.6.0
 
 Introduce proxy logic, so users can make urlbox screenshot requests via their proxy which is set in the plugin settings.
@@ -112,17 +116,39 @@ Fixed minor bugs and tested with Wordpress 5.7-beta
 
 Initial Release!
 
-## Releasing/Updating the Plugin on Wordpress
+## Testing
 
-[URLBox Screenshots Wordpress Plugin Homepage](https://wordpress.org/plugins/urlbox-screenshots/#developers)
+There are two ways to test the plugin easily, one with the wordpress playground, and the other using wp-env.
 
-### Testing
+To install wp env make sure you have Node installed and Docker. Make sure docker is running!
 
-You can test the plugin by zipping it from the root file, then importing the zipped file using a locally running Wordpress instance, or using this playground:
+Install: `npm -g i @wordpress/env`
+
+wp-env uses a config file held in this directory (wp-env.json). Make sure you're in this directory in your terminal, then run:
+
+`WP_ENV_PORT=3333 wp-env start`
+
+This will set the exposed port to 3333 instead of 8888 which some people often have in use. You can change this port to whatever you wish that is unused.
+
+You can change wordpress and php versions by changing the wp-env.json:
+
+```JSON
+    "core": "Wordpress/WordPress#6.0",
+    "phpVersion": "8.0",
+```
+
+Will change to wordpress version 6.0 and PHP 8.0 on rerunning wp-env start.
+
+You can also test the plugin by zipping it from the root file, then importing the zipped file in this playground:
 
 '''https://playground.wordpress.net/?storage=browser&php=8.0&wp=6.5&networking=yes'''
 
 Ensure that you're on at least PHP 8, Wordpress 6.5 and you have networking enabled.
+
+## Releasing/Updating the Plugin on Wordpress
+
+[URLBox Screenshots Wordpress Plugin Homepage](https://wordpress.org/plugins/urlbox-screenshots/#developers)
+
 
 ### Overview
 
