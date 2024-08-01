@@ -2,9 +2,9 @@
 Contributors: Chris Roebuck, Ankur Gurha, James Ogilvie, Arnold Cubici-Jones
 Author: Urlbox
 Tags: screenshot,screenshots,puppeteer,playwright,url to png
-Requires at least: 3.3
-Tested up to: 6.5
-Stable tag: 1.6.0
+Requires at least: 6.0
+Tested up to: 6.6.1
+Stable tag: 1.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,6 +15,8 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 This plugin uses the Urlbox API to generate website screenshots and display them on your site. Please note the Urlbox API is a paid service - you can sign up for a trial at <https://urlbox.com>.
 
 **How to use the plugin**
+
+When running Wordpress locally or in a containerised environment, we recommend you use at least Wordpress version 6.0 and PHP 8.0.
 
 1. First activate the plugin and fill in your Urlbox.com API Key and Secret in the settings page.
 
@@ -40,8 +42,8 @@ The plugin wraps the `<img>` element inside a `<figure>` element. You can set th
 
 == Installation ==
 
-1. Upload the Urlbox plugin directory to the `/wp-content/plugins/urlbox` directory or install using the WordPress plugin installer
-2. Activate the plugin through the **Plugins** menu in WordPress
+1. Upload the Urlbox plugin directory to the `/wp-content/plugins/urlbox` directory or install using the Wordpress plugin installer
+2. Activate the plugin through the **Plugins** menu in Wordpress
 3. Edit default settings as necessary using **Urlbox Options**
 4. Create a new page or post, or edit an existing one
 5. Insert your shortcode using the Shortcode block
@@ -62,9 +64,13 @@ See <https://urlbox.com/docs/options> for default values
 
 == Known Bugs ==
 
-* None at this time
+1.6.0 - Bug in proxy logic. Testing one's proxy connection in the plugin's settings will not work due to an 'Invalid JSON' error, because of a lack of JSON encoding. This error does not display in the Wordpress playground, but will display in any dockerised/live environment. Action taken was to fix the bug and release 1.6.1, and introduce a dockerised test/development environment for future coverage before releases.
 
 == Changelog ==
+
+= 1.6.1 =
+
+Performs a refactor of the plugin, fixing a bug in the proxy logic, adding more documentation to docblocks, improving security issues, and decoupling proxy logic into a specific test method for the proxy connection and a generalised POST /sync method.
 
 = 1.6.0 =
 

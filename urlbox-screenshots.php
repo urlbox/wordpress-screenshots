@@ -13,7 +13,7 @@
  * Plugin Name: Urlbox Screenshots
  * Plugin URI:  https://urlbox.io
  * Description: Take screenshots of websites and display them on your wordpress site.
- * Version:     1.6.0
+ * Version:     1.6.1
  * Author:      Urlbox
  * Author URI:  https://github.com/urlbox-io/wordpress-screenshots
  * Text Domain: urlbox-screenshots
@@ -31,37 +31,99 @@ if (!class_exists('Urlbox')) {
 
 	class Urlbox
 	{
+		const KEY_API_KEY = 'api_key';
+		const KEY_API_SECRET = 'api_secret';
+		const KEY_FORMAT = 'format';
+		const KEY_URL = 'url';
+		const KEY_THUMB_WIDTH = 'thumb_width';
+		const KEY_WIDTH = 'width';
+		const KEY_HEIGHT = 'height';
+		const KEY_DELAY = 'delay';
+		const KEY_USER_AGENT = 'user_agent';
+		const KEY_QUALITY = 'quality';
+		const KEY_DISABLE_JS = 'disable_js';
+		const KEY_FULL_PAGE = 'full_page';
+		const KEY_RETINA = 'retina';
+		const KEY_FORCE = 'force';
+		const KEY_TTL = 'ttl';
+		const KEY_CUSTOM_CSS = 'customcss';
+		const KEY_IMAGE_SIZE = 'imagesize';
+		const KEY_DEBUG = 'debug';
+		const KEY_FIGURE_CLASS = 'figure_class';
+		const KEY_IMG_CLASS = 'img_class';
+		const KEY_ALT = 'alt';
+		const KEY_USE_PROXY = 'use_proxy';
+		const KEY_USERNAME = 'username';
+		const KEY_PASSWORD = 'password';
+		const KEY_HOSTNAME = 'hostname';
+		const KEY_PORT = 'port';
+		const KEY_PROTOCOL = 'protocol';
+
+		const PROTOCOL_HTTP = 'http';
+		const PROTOCOL_HTTPS = 'https';
+
+		// API Endpoints
+		const API_ENDPOINT = 'https://api.urlbox.com/v1';
+		const API_ENDPOINT_SYNC = self::API_ENDPOINT . '/render/sync';
+
+		// Keys required to create a proxy endpoint.
+		const PROXY_KEYS = [
+			self::KEY_USERNAME,
+			self::KEY_PASSWORD,
+			self::KEY_HOSTNAME,
+			self::KEY_PORT,
+			self::KEY_PROTOCOL
+		];
+
+		// Keys we don't want sent in the request options.
+		const FORBIDDEN_KEYS = [
+			self::KEY_API_KEY,
+			self::KEY_API_SECRET,
+			self::KEY_FORMAT,
+			self::KEY_CUSTOM_CSS,
+			self::KEY_IMAGE_SIZE,
+			self::KEY_FIGURE_CLASS,
+			self::KEY_IMG_CLASS,
+			self::KEY_ALT,
+			self::KEY_USE_PROXY,
+			self::KEY_USERNAME,
+			self::KEY_PASSWORD,
+			self::KEY_HOSTNAME,
+			self::KEY_PORT,
+			self::KEY_PROTOCOL,
+		];
+
 		public static $urlboxOptions;
 		protected $option_name = 'urlbox_data';
 		protected $fields = array();
 		public $default_values = array(
-			'api_key' => '',
-			'api_secret' => '',
-			'format' => 'png',
-			'url' => 'google.com',
-			'thumb_width' => '',
-			'width' => '',
-			'height' => '',
-			'delay' => '',
-			'user_agent' => '',
-			'quality' => '',
-			'disable_js' => '',
-			'full_page' => '',
-			'retina' => '',
-			'force' => '',
-			'ttl' => '',
-			'customcss' => '',
-			'imagesize' => '',
-			'debug' => '',
-			'figure_class' => '',
-			'img_class' => '',
-			'alt' => '',
-			'use_proxy' => '',
-			'username' => '',
-			'password' => '',
-			'hostname' => '',
-			'port' => '',
-			'protocol' => 'https',
+			self::KEY_API_KEY => '',
+			self::KEY_API_SECRET => '',
+			self::KEY_FORMAT => 'png',
+			self::KEY_URL => 'google.com',
+			self::KEY_THUMB_WIDTH => '',
+			self::KEY_WIDTH => '',
+			self::KEY_HEIGHT => '',
+			self::KEY_DELAY => '',
+			self::KEY_USER_AGENT => '',
+			self::KEY_QUALITY => '',
+			self::KEY_DISABLE_JS => '',
+			self::KEY_FULL_PAGE => '',
+			self::KEY_RETINA => '',
+			self::KEY_FORCE => '',
+			self::KEY_TTL => '',
+			self::KEY_CUSTOM_CSS => '',
+			self::KEY_IMAGE_SIZE => '',
+			self::KEY_DEBUG => '',
+			self::KEY_FIGURE_CLASS => '',
+			self::KEY_IMG_CLASS => '',
+			self::KEY_ALT => '',
+			self::KEY_USE_PROXY => '',
+			self::KEY_USERNAME => '',
+			self::KEY_PASSWORD => '',
+			self::KEY_HOSTNAME => '',
+			self::KEY_PORT => '',
+			self::KEY_PROTOCOL => self::PROTOCOL_HTTPS,
 		);
 
 		/**
@@ -82,6 +144,10 @@ if (!class_exists('Urlbox')) {
 			$this->set_hooks();
 		}
 
+		/**
+		 * Sets the field definitions for the settings page
+		 * @returns void
+		 */
 		public function set_fields()
 		{
 			$this->fields = array(
@@ -101,7 +167,7 @@ if (!class_exists('Urlbox')) {
 					"id" => "format",
 					"name" => "Image Format",
 					"type" => "radio",
-					"options" => array('png' => "PNG", 'jpeg' => "JPEG", 'pdf' => "PDF", 'svg' => "SVG", 'webp' => "WEBP",'html' => "HTML"),
+					"options" => array('png' => "PNG", 'jpeg' => "JPEG", 'pdf' => "PDF", 'svg' => "SVG", 'webp' => "WEBP", 'html' => "HTML"),
 				),
 				// array(
 				// 	"id" => "url",
@@ -232,6 +298,20 @@ if (!class_exists('Urlbox')) {
 			);
 		}
 
+		/**
+		 * Registers all WordPress hooks and actions for the plugin.
+		 *
+		 * This method sets up the necessary filters and actions for the plugin's 
+		 * operation, including:
+		 *
+		 * - Adding a settings link to the plugin's entry on the plugins page.
+		 * - Registering admin menu pages and settings fields.
+		 * - Enqueueing scripts and styles for both the admin dashboard and the frontend.
+		 * - Registering AJAX actions for both authenticated and unauthenticated users.
+		 * - Defining a shortcode for embedding the plugin's functionality in posts/pages/sites.
+		 *
+		 * @return void
+		 */
 		public function set_hooks()
 		{
 			add_filter('plugin_action_links', array($this, 'add_plugin_settings_link'), 10, 2);
@@ -239,7 +319,7 @@ if (!class_exists('Urlbox')) {
 				add_action('admin_menu', array($this, 'add_urlbox_options_page'));
 				add_action('admin_init', array($this, 'add_fields'));
 				add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
-        add_action('wp_ajax_test_proxy_connection', array($this, 'ajax_test_proxy_connection'));
+				add_action('wp_ajax_test_proxy_connection', array($this, 'ajax_test_proxy_connection'));
 			}
 			add_shortcode('urlbox', array($this, 'urlbox_shortcode'));
 
@@ -249,7 +329,14 @@ if (!class_exists('Urlbox')) {
 		}
 
 		/**
-		 * Enqueue admin scripts
+		 * Enqueues and localizes JavaScript for the WordPress admin dashboard.
+		 *
+		 * This method registers and enqueues the plugin's custom JavaScript file
+		 * for the admin area, ensuring that it is loaded with the appropriate 
+		 * dependencies. It localizes the script to pass dynamic data, such as 
+		 * the AJAX URL and a nonce for security to the JavaScript environment.
+		 *
+		 * @return void
 		 */
 		public function enqueue_admin_scripts()
 		{
@@ -260,16 +347,30 @@ if (!class_exists('Urlbox')) {
 			));
 		}
 
+		/**
+		 * Enqueues frontend scripts and styles for the plugin.
+		 *
+		 * This method loads the plugin's CSS and JavaScript files for the 
+		 * frontend of the site. It also localizes the JavaScript file to pass
+		 * the AJAX URL and a nonce for secure AJAX operations.
+		 *
+		 * @return void
+		 */
 		public function enqueue_scripts()
 		{
 			wp_enqueue_style('urlbox-style', plugin_dir_url(__FILE__) . 'css/urlbox-style.css');
 			wp_enqueue_script('urlbox-js', plugin_dir_url(__FILE__) . 'js/urlbox.js', array('jquery'), null, true);
 			wp_localize_script('urlbox-js', 'urlbox_ajax', array(
-        'ajax_url' => admin_url('admin-ajax.php'),
-        'nonce' => wp_create_nonce('urlbox_proxy_nonce')
-    	));
+				'ajax_url' => admin_url('admin-ajax.php'),
+				'nonce' => wp_create_nonce('urlbox_proxy_nonce')
+			));
 		}
 
+		/**
+		 * Adds the Urlbox options page to the WordPress admin menu.
+		 *
+		 * @return void
+		 */
 		public function add_urlbox_options_page()
 		{
 			// Create menu tab
@@ -283,7 +384,9 @@ if (!class_exists('Urlbox')) {
 		}
 
 		/**
-		 * Add Settings link to plugin
+		 * Adds the settings link to the Urlbox settings on the plugin page.
+		 *
+		 * @return array $links
 		 */
 		public function add_plugin_settings_link($links, $file)
 		{
@@ -299,6 +402,12 @@ if (!class_exists('Urlbox')) {
 			return $links;
 		}
 
+		/**
+		 * Renders the Urlbox plugin's admin settings page.
+		 * Outputs the HTML for the plugin's settings page in the WordPress admin area.
+		 *
+		 * @return void
+		 */
 		public function render_admin_page()
 		{
 			if (!current_user_can('manage_options')) {
@@ -315,7 +424,7 @@ if (!class_exists('Urlbox')) {
 				<form method='post' action='options.php'>
 					<?php
 					settings_fields($this->option_name);
-					do_settings_sections('urlbox-screenshots');
+					do_settings_sections('urlbox-screenshots'); // Prints all settings
 					?>
 					<div style="display: flex; align-items: center; margin-top: 20px;">
 						<button id="test-proxy-connection" class="button button-secondary"><?php _e('Test Proxy Connection', 'urlbox') ?></button>
@@ -328,16 +437,19 @@ if (!class_exists('Urlbox')) {
 <?php
 		}
 
+		/**
+		 * Registers the settings and adds the fields to the plugin's settings page.
+		 * @return void
+		 */
 		public function add_fields()
 		{
-
 			$option_values = get_option($this->option_name, array());
 			$data = shortcode_atts($this->default_values, $option_values);
 
 			register_setting(
-				$this->option_name, // group, used for settings_fields()
+				$this->option_name, // used by settings_fields() method to get the setting by group
 				$this->option_name, // option name, used as key in db
-				array($this, 'sanitize') // validation cb
+				array($this, 'sanitize') // sanitizes the input before saving
 			);
 			add_settings_section(
 				'required_section', // id
@@ -384,6 +496,15 @@ if (!class_exists('Urlbox')) {
 			}
 		}
 
+		/**
+		 * Renders the input field for the settings page based on the field type.
+		 *
+		 * This method generates the HTML for the different types of fields 
+		 * (text, number, checkbox, radio) used in the plugin's settings page.
+		 *
+		 * @param array $field Associative array containing field details.
+		 * @return void
+		 */
 		public function render_field(array $field)
 		{
 			$id     = $field['id'];
@@ -404,7 +525,7 @@ if (!class_exists('Urlbox')) {
 				case "checkbox":
 					print "<input type='checkbox' value='1' class='code' name='$name' id='$id'
 							" . checked($value, '1', false) . "/>";
-							if (!in_array($section, array('required_section', 'proxy'))) {
+					if (!in_array($section, array('required_section', 'proxy'))) {
 						print "<div class='description'>$desc</div>";
 					}
 					return;
@@ -425,6 +546,12 @@ if (!class_exists('Urlbox')) {
 			}
 		}
 
+		/**
+		 * Generates a helpful description to show how to use a given option.
+		 *
+		 * @param string $id The ID of the field for which to generate the description.
+		 * @return string The formatted help description string.
+		 */
 		protected function get_shortcode_help($id)
 		{
 			$desc = __(
@@ -435,9 +562,13 @@ if (!class_exists('Urlbox')) {
 		}
 
 		/**
-		 * Sanitize each setting field as needed
+		 * Sanitizes each setting field.
 		 *
-		 * @param array $input Contains all settings fields as array keys
+		 * Processes and sanitizes each input value from the settings form based on the 
+		 * type of field, ensuring that the data is sanitised before saving it to the database.
+		 *
+		 * @param array $input Contains all settings fields as array keys.
+		 * @return array $new_input Sanitized input fields.
 		 */
 		public function sanitize($input)
 		{
@@ -490,8 +621,7 @@ if (!class_exists('Urlbox')) {
 									$new_input[$key] = $val;
 									break;
 							}
-						}
-						else {
+						} else {
 							$new_input[$key] = $val;
 						}
 					}
@@ -503,24 +633,31 @@ if (!class_exists('Urlbox')) {
 		}
 
 		/** 
-		 * Print the Section text
+		 * Prints the section text underneath the auth settings
 		 */
 		public function printAuthSectionInfo()
 		{
 			print 'Enter your API Key and Secret here. You can get these from your <a href="https://urlbox.io/dashboard">Urlbox Dashboard</a>.';
 		}
 
+		/** 
+		 * Prints the section text underneath the default settings
+		 */
 		public function printSectionInfo()
 		{
 			print 'You can edit the default options here. See <a href="https://urlbox.io/docs/options">Urlbox Options Reference</a> for default values.';
 		}
+
+		/** 
+		 * Prints the section text underneath the html settings
+		 */
 		public function printHtmlSectionInfo()
 		{
 			print 'You can add classes to the wrapping ' . htmlentities("<figure>") . ' element and the inside ' . htmlentities("<img>") . ' element here.';
 		}
 
 		/**
-		 * Print the Section text
+		 * Prints the text underneath proxy settings
 		 */
 		public function printProxySectionInfo()
 		{
@@ -536,22 +673,26 @@ if (!class_exists('Urlbox')) {
 		}
 
 		/**
-		 * Function Urlboxplugin
+		 * Generates the output for the Urlbox shortcode as a render link.
 		 *
-		 * @return string article display
-		 *        
+		 * Processes the shortcode options, sets default values,
+		 * sanitizes the input, and generates the HTML output which displays the image.
+		 *
+		 * @param array $atts The options passed by the user.
+		 * @return string The HTML output for the shortcode.
+		 * 
 		 */
 		public function urlbox_shortcode($atts)
 		{
 			$option_values = get_option($this->option_name, array());
 			$data = shortcode_atts($this->default_values, $option_values);
 			$data = shortcode_atts($data, $atts);
-			
+
 			// echo '<pre>'; print_r($data); echo '</pre>';
 
 			// setting defaults if needed
 			$urlboxOptions = $this->sanitize($data);
-			$urlboxOptions = array_merge($urlboxOptions,$atts);
+			$urlboxOptions = array_merge($urlboxOptions, $atts);
 			// echo '<pre>'; print_r($urlboxOptions); echo '</pre>';
 
 			$urlboxOptions['url'] = empty($data['url']) ? 'google.com' : $data['url'];
@@ -584,7 +725,7 @@ if (!class_exists('Urlbox')) {
 			$output .= "<img class='" . esc_html__($urlboxOptions['img_class']) . "' src='" . esc_html__($downloadedUrl) . "'";
 			if (isset($urlboxOptions['alt']) && !empty($urlboxOptions['alt']))
 				$output .= " alt='" . esc_attr($urlboxOptions['alt']) . "'";
-			if (!empty($urlboxOptions['use_proxy']) && $urlboxOptions['use_proxy'] && ! get_transient($urlboxOptions['url'])) {
+			if (!empty($urlboxOptions['use_proxy']) && $urlboxOptions['use_proxy'] && !get_transient($urlboxOptions['url'])) {
 				$output .=  " data-render-url='" . esc_attr($urlboxOptions['url']) . "'";
 			}
 			$output .= "/>";
@@ -594,25 +735,31 @@ if (!class_exists('Urlbox')) {
 			return $output;
 		}
 
+		/**
+		 * Generates a render link given options
+		 * @param $urlboxOptions
+		 * @return string The render link
+		 */
 		public function generateUrl($urlboxOptions)
 		{
 			if (array_key_exists('use_proxy', $urlboxOptions) && $urlboxOptions['use_proxy']) {
-			    if ($render_url = get_transient($urlboxOptions['url'])) {
-				return $render_url;
-			    }
-			    return plugin_dir_url(__FILE__) . 'images/default.png';
+				if ($render_url = get_transient($urlboxOptions['url'])) {
+					return $render_url;
+				}
+				return plugin_dir_url(__FILE__) . 'images/default.png';
 			}
 
 			$APIKEY = $urlboxOptions['api_key'];
 			$SECRET = $urlboxOptions['api_secret'];
 			$format = $urlboxOptions['format'];
 			$_parts = [];
+			// If any of the options do not have the following keys, they're safe, add them to the query string.
 			foreach ($urlboxOptions as $key => $value) {
-			    if (!in_array($key, array('api_key', 'api_secret', 'format', 'customcss', 'imagesize', 'figure_class', 'img_class', 'alt', 'use_proxy', 'username', 'password', 'hostname', 'port', 'protocol'))) {
-				if (!empty($value)) {
-				    $_parts[] = "$key=$value";
+				if (!in_array($key, array('api_key', 'api_secret', 'format', 'customcss', 'imagesize', 'figure_class', 'img_class', 'alt', 'use_proxy', 'username', 'password', 'hostname', 'port', 'protocol'))) {
+					if (!empty($value)) {
+						$_parts[] = "$key=$value";
+					}
 				}
-			    }
 			}
 			$query_string = implode("&", $_parts);
 			$TOKEN = hash_hmac("sha1", $query_string, $SECRET);
@@ -620,32 +767,52 @@ if (!class_exists('Urlbox')) {
 		}
 
 		/**
-		 * Fetches the render URL using a proxy
+		 * Fetches a render url using the Urlbox /sync API endpoint.
+		 *
+		 * @param array $urlboxOptions
 		 */
-		public function proxy_fetch_render_url($urlboxOptions) {
-			$body = [
-                'url' => $urlboxOptions['url'],
-                'proxy' => $this->build_proxy_url($urlboxOptions)
-    	    ];
+		public function fetch_render_sync(array $urlboxOptions)
+		{
+			// Filter out any sensitive/unwanted data from request
+			$body = $this->removeForbiddenAndEmptyKeys($urlboxOptions);
 
-			$response = wp_remote_post('https://api.urlbox.io/v1/render/sync', [
-				'headers'   => [
-					'Content-Type' => 'application/json',
-					'Authorization' => 'Bearer ' . $urlboxOptions['api_secret']
-				],
-				'body'      => $body,
-				'timeout'   => 25
-			]);
-
-			$response_body = json_decode(wp_remote_retrieve_body($response), true);
-			
-			// If an error occurred, log it proceed with the normal URL generation
-			if (is_wp_error($response_body)) {
-				error_log($response_body->get_error_message());
-				return new WP_Error('urlbox_error', $response_body->get_error_message()); 
+			$secret = $urlboxOptions['api_secret'];
+			if (empty($secret)) {
+				wp_send_json_error('Error: No API token provided, please set this up in the Urlbox plugin settings.');
+				wp_die();
 			}
 
-			// If response contains an error, return it as a WP_Error
+			if (!array_key_exists('url', $body) && !array_key_exists('html', $body)) {
+				wp_send_json_error('Error: No HTML or Url provided, please provide one in your request.');
+				wp_die();
+			}
+
+			// More information on wp_remote_post
+			// https://developer.wordpress.org/reference/classes/wp_http/request/
+			// https://developer.wordpress.org/reference/functions/wp_remote_post/
+			$options = [
+				'body'        => wp_json_encode($body),
+				'headers'     => [
+					'Content-Type' => 'application/json',
+					'Authorization' => "Bearer " . $secret,
+				],
+				'timeout'     => 60,
+				'blocking'    => true,
+				'data_format' => 'body',
+			];
+
+			$response = wp_remote_post(
+				self::API_ENDPOINT_SYNC,
+				$options
+			);
+
+			$response_body = json_decode(wp_remote_retrieve_body($response), true);
+
+			if (is_wp_error($response_body)) {
+				error_log($response_body->get_error_message());
+				return new WP_Error('urlbox_error', $response_body->get_error_message());
+			}
+
 			if (isset($response_body['error'])) {
 				return new WP_Error('urlbox_error', $response_body['error']['message']);
 			}
@@ -654,49 +821,99 @@ if (!class_exists('Urlbox')) {
 		}
 
 		/**
-		 * Builds the proxy URL
+		 * Constructs a proxy URL from provided options.
+		 *
+		 * Combines protocol, username, password, hostname, and port 
+		 * from the $urlboxOptions array to create a proxy URL.
+		 *
+		 * @param array $urlboxOptions Options used to build the proxy URL.
+		 * @return string The constructed proxy URL.
 		 */
 		private function build_proxy_url($urlboxOptions)
 		{
-			return $urlboxOptions['protocol'] . '://' . $urlboxOptions['username'] . ':' . 
-				$urlboxOptions['password'] . '@' . $urlboxOptions['hostname'] . ':' . 
+			if (
+				!isset($urlboxOptions[self::KEY_PROTOCOL]) |
+				!isset($urlboxOptions[self::KEY_USERNAME]) |
+				!isset($urlboxOptions[self::KEY_PASSWORD]) |
+				!isset($urlboxOptions[self::KEY_HOSTNAME]) |
+				!isset($urlboxOptions[self::KEY_PORT])
+			) {
+				wp_send_json_error("Error: Missing Proxy setting.");
+				wp_die();
+			}
+			return $urlboxOptions['protocol'] . '://' . $urlboxOptions['username'] . ':' .
+				$urlboxOptions['password'] . '@' . $urlboxOptions['hostname'] . ':' .
 				$urlboxOptions['port'];
 		}
 
 		/**
-		 * Test the proxy connection
+		 * Tests that the proxy settings a user has entered in the settings work with the API.
+		 *
+		 * This method checks the user's proxy settings by attempting to connect to a
+		 * known URL using the provided proxy. 	
 		 */
-		public function ajax_test_proxy_connection() 
+		public function ajax_test_proxy_connection()
 		{
-			check_ajax_referer('urlbox_admin_nonce', 'nonce');
+			// Verify nonce
+			if (!check_ajax_referer('urlbox_admin_nonce', 'nonce', false)) {
+				wp_send_json_error('Invalid nonce. Please refresh the page and try again.');
+				wp_die();
+			}
 
+			// Gets all data from the post request
 			$urlbox_data = $_POST['urlbox_data'];
 
+			$proxyKeys = [];
+
+			// Get proxy keys from main request options
 			foreach ($urlbox_data as $key => $value) {
-				if (in_array($key, ['username', 'password', 'hostname', 'port', 'protocol'])) {
+				if (in_array($key, self::PROXY_KEYS)) {
 					if (empty($value)) {
 						wp_send_json_error("Error: The field '$key' is empty.");
+						wp_die();
 					}
-					$urlbox_data[$key] = sanitize_text_field($value);
-				}				
+					$proxyKeys[$key] = sanitize_text_field($value);
+				}
 			}
 
+			// Set test options
 			$urlbox_data['url'] = 'google.com';
-			$urlbox_data['proxy'] = $this->build_proxy_url($urlbox_data);
+			$urlbox_data['proxy'] = $this->build_proxy_url($proxyKeys);
 
-			$response_body = $this->proxy_fetch_render_url($urlbox_data);
+			$response_body = $this->fetch_render_sync($urlbox_data);
 
+			// Check if the response contains an error
 			if (is_wp_error($response_body)) {
-				wp_send_json_error('Error: ' . $response_body->get_error_message());
+				wp_send_json_error("Proxy test failed: " . $response_body->get_error_message());
+			} else {
+				wp_send_json_success('Proxy connection successful.');
 			}
+		}
 
-			wp_send_json_success('Proxy connection successful!');		
+		/**
+		 * Removes the forbidden keys from an array of options
+		 * @param array $options
+		 * @return array
+		 */
+		private function removeForbiddenAndEmptyKeys(array $urlboxOptions): array
+		{
+			foreach ($urlboxOptions as $key => $option) {
+				// If it has a value
+				if (!empty($option)) {
+					// If it's a forbidden key
+					if (in_array($key, self::FORBIDDEN_KEYS)) {
+						unset($urlboxOptions[$key]);
+					}
+				}
+			}
+			return $urlboxOptions;
 		}
 
 		/**
 		 * Ajax call to fetch the render URL using a proxy
 		 */
-		public function ajax_proxy_fetch_render_url() {
+		public function ajax_proxy_fetch_render_url()
+		{
 			check_ajax_referer('urlbox_proxy_nonce', 'nonce');
 
 			$urlboxOptions = get_option($this->option_name, array());
@@ -707,17 +924,17 @@ if (!class_exists('Urlbox')) {
 				'url' => $urlboxOptions['url']
 			];
 
-			$rendered_url = $this->proxy_fetch_render_url($urlboxOptions);
+			$rendered_url = $this->fetch_render_sync($urlboxOptions);
 
-			if (! $rendered_url) {
+			if (!$rendered_url) {
 				wp_send_json_success($default);
 				return;
 			}
 
 			if (is_wp_error($rendered_url)) {
 				error_log('Error: ' . $rendered_url->get_error_message());
-        wp_send_json_error('Error: ' . $rendered_url->get_error_message());
-        return;
+				wp_send_json_error('Error: ' . $rendered_url->get_error_message());
+				return;
 			}
 
 			// Set transient for 30 days
