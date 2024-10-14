@@ -4,7 +4,7 @@ Author: Urlbox
 Tags: screenshot,screenshots,puppeteer,playwright,url to png
 Requires at least: 6.0
 Tested up to: 6.6.1
-Stable tag: 1.6.1
+Stable tag: 1.6.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,6 +67,10 @@ See <https://urlbox.com/docs/options> for default values
 1.6.0 - Bug in proxy logic. Testing one's proxy connection in the plugin's settings will not work due to an 'Invalid JSON' error, because of a lack of JSON encoding. This error does not display in the Wordpress playground, but will display in any dockerised/live environment. Action taken was to fix the bug and release 1.6.1, and introduce a dockerised test/development environment for future coverage before releases.
 
 == Changelog ==
+
+= 1.6.2 =
+
+Update instances of .io to .com. This includes the generated URL made by the generateUrl() method.
 
 = 1.6.1 =
 

@@ -74,6 +74,10 @@ See the plugin settings page for all possible options
 
 ## Changelog
 
+### 1.6.2
+
+Update instances of .io to .com. This includes the generated URL made by the generateUrl() method.
+
 ### 1.6.1
 
 Performs a refactor of the plugin, fixing a bug in the proxy logic, adding more documentation to docblocks, improving security issues, and decoupling proxy logic into a specific test method for the proxy connection and a generalised POST /sync method.
