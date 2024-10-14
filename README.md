@@ -12,15 +12,15 @@ Just use `[urlbox url=urlbox.com thumb_width=600]` in a Shortcode block.
 
 This will generate the following screenshot:
 
-![urlbox.io](https://api.urlbox.io/v1/ca482d7e-9417-4569-90fe-80f7c5e1c781/8f949c12462f53ea3359a412f536ceb69a8ce8e8/png?url=urlbox.io&thumb_width=600)
+![urlbox.com](https://api.urlbox.com/v1/ca482d7e-9417-4569-90fe-80f7c5e1c781/8f949c12462f53ea3359a412f536ceb69a8ce8e8/png?url=urlbox.com&thumb_width=600)
 
 ## Full Page Screenshot Example
 
-Add full_page=true to your shortcode options `[urlbox url=urlbox.io thumb_width=600 full_page=true]`
+Add full_page=true to your shortcode options `[urlbox url=urlbox.com thumb_width=600 full_page=true]`
 
 And the resulting screenshot will look like this:
 
-![urlbox.io](https://api.urlbox.io/v1/ca482d7e-9417-4569-90fe-80f7c5e1c781/5efad4d9d0ce3b77f1ec529c8b201ad93beeb14c/png?url=urlbox.io&thumb_width=600&full_page=true)
+![urlbox.com](https://api.urlbox.com/v1/ca482d7e-9417-4569-90fe-80f7c5e1c781/5efad4d9d0ce3b77f1ec529c8b201ad93beeb14c/png?url=urlbox.com&thumb_width=600&full_page=true)
 
 ## What do you need
 
@@ -34,7 +34,7 @@ And the resulting screenshot will look like this:
 
 Using the plugin is very easy:
 
-- First activate the plugin and fill in your Urlbox.io API Key and Secret in the settings page. (Settings -> Urlbox)
+- First activate the plugin and fill in your Urlbox.com API Key and Secret in the settings page. (Settings -> Urlbox)
 
 - (Optional) Set default options for your screenshots, such as width, height, and thumbnail width on the plugin settings page.
 

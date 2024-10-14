@@ -11,7 +11,7 @@
  *
  * @wordpress-plugin
  * Plugin Name: Urlbox Screenshots
- * Plugin URI:  https://urlbox.io
+ * Plugin URI:  https://urlbox.com
  * Description: Take screenshots of websites and display them on your wordpress site.
  * Version:     1.6.1
  * Author:      Urlbox
@@ -637,7 +637,7 @@ if (!class_exists('Urlbox')) {
 		 */
 		public function printAuthSectionInfo()
 		{
-			print 'Enter your API Key and Secret here. You can get these from your <a href="https://urlbox.io/dashboard">Urlbox Dashboard</a>.';
+			print 'Enter your API Key and Secret here. You can get these from your <a href="https://urlbox.com/dashboard">Urlbox Dashboard</a>.';
 		}
 
 		/** 
@@ -645,7 +645,7 @@ if (!class_exists('Urlbox')) {
 		 */
 		public function printSectionInfo()
 		{
-			print 'You can edit the default options here. See <a href="https://urlbox.io/docs/options">Urlbox Options Reference</a> for default values.';
+			print 'You can edit the default options here. See <a href="https://urlbox.com/docs/options">Urlbox Options Reference</a> for default values.';
 		}
 
 		/** 
@@ -763,7 +763,7 @@ if (!class_exists('Urlbox')) {
 			}
 			$query_string = implode("&", $_parts);
 			$TOKEN = hash_hmac("sha1", $query_string, $SECRET);
-			return "https://api.urlbox.io/v1/$APIKEY/$TOKEN/$format?$query_string";
+			return "https://api.urlbox.com/v1/$APIKEY/$TOKEN/$format?$query_string";
 		}
 
 		/**
